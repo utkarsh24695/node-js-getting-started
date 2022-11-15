@@ -7,14 +7,15 @@ pipeline {
         }
     } */
     stages {
-        stage('Build') { 
-            steps {
-                sh 'npm install' 
-            }
-        }
         stage('Test') { 
             steps {
+                sh 'npm install' 
                 sh 'npm test' 
+            }
+        }
+        stage('Build') { 
+            steps {
+                sh 'npm run  build --if-present' 
             }
         }
     }
