@@ -8,7 +8,9 @@ pipeline {
     } */
     stages {
         stage('checkout'){
+            steps {
             checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlogin', url: 'https://github.com/utkarsh24695/node-js-getting-started.git']]])
+            }
         }
         stage('Test') { 
             steps {
