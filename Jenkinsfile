@@ -12,12 +12,20 @@ pipeline {
             checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlogin', url: 'https://github.com/utkarsh24695/node-js-getting-started.git']]])
             }
         }
-        stage('SonarQube Analysis') { 
-            steps {
-                scannerHome(tool: 'mySonar') {
-                    sh "${scannerHome}/bin/sonar-scanner"
+        stage('SonarCloud') {
+            environment {
+                SCANNER_HOME = tool 'mySonarScanner'
+                ORGANIZATION = "utkarsh24695"
+                PROJECT_NAME = "node-js-getting-started"
                 }
-            }
+            steps {
+                withSonarQubeEnv('mySonar') {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION \
+                    -Dsonar.java.binaries=build/classes/java/ \
+                    -Dsonar.projectKey=$PROJECT_NAME \
+                    -Dsonar.sources=.'''
+                    }
+                }
         }
         stage('Build') { 
             steps {
