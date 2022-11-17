@@ -12,15 +12,22 @@ pipeline {
             checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlogin', url: 'https://github.com/utkarsh24695/node-js-getting-started.git']]])
             }
         }
-        stage('Test') { 
+        stage('SonarQube Analysis') { 
             steps {
-                sh 'npm install' 
-                sh 'npm test' 
+                scannerHome(tool: 'mySonar') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
             }
         }
         stage('Build') { 
             steps {
+                sh 'npm install' 
                 sh 'npm run  build --if-present' 
+            }
+        }
+        stage('Test') { 
+            steps {
+                sh 'npm test' 
             }
         }
     }
