@@ -55,8 +55,8 @@ pipeline {
                 snykInstallation: 'mysnyk',
                 snykTokenId: 'mysnyktoken',
                 // place other parameters here
-                sh "snyk-linux test"
                 )
+                sh "${SNYK_HOME}/snyk-linux test"
             }
         }
 
