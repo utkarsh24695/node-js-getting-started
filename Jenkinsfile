@@ -56,7 +56,7 @@ pipeline {
                 snykTokenId: 'mysnyktoken',
                 // place other parameters here
                 )
-                sh "${SNYK_HOME}/snyk-linux test"
+                sh "${SNYK_HOME}/snyk-linux test  --all-projects"
             }
         }
 
