@@ -48,6 +48,18 @@ pipeline {
             }
         }
 
+        stage('Snyk Test') {
+            steps {
+                echo 'Testing...'
+                snykSecurity(
+                snykInstallation: 'mysnyk',
+                snykTokenId: 'mysnyktoken',
+                // place other parameters here
+                sh "${SNYK_HOME}/snyk-linux test"
+                )
+            }
+        }
+
         stage('Artifact to S3') {
             steps {
                 // moveComponents destination: 'mynode', nexusInstanceId: 'nexus3', tagName: 'build1'
