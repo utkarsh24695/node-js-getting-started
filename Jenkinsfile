@@ -56,7 +56,7 @@ pipeline {
                 snykTokenId: 'mysnyktoken',
                 // place other parameters here
                 )
-                snykSecurity organisation: 'utkarsh.sharma', projectName: 'node-js-getting-started', severity: 'medium', snykInstallation: 'mysnyk', snykTokenId: 'mysnyktoken', targetFile: 'package.json'
+                snykSecurity organisation: 'utkarsh.sharma-t1s', projectName: 'node-js-getting-started', severity: 'medium', snykInstallation: 'mysnyk', snykTokenId: 'mysnyktoken', targetFile: 'package.json'
                 //sh "snyk test  --json --severity-threshold=low --all-projects"
                 //sh "snyk code test"
             }
