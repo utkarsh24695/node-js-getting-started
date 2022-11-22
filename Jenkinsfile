@@ -32,7 +32,7 @@ pipeline {
                 timeout(time: 1, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
                 }
-            }
+            }   
         }
 
         stage('Build') { 
@@ -44,18 +44,18 @@ pipeline {
         
         stage('Test') { 
             steps {
-                sh 'npm test' 
+            //    sh 'npm test' 
             }
         }
 
         stage('Snyk Test') {
             steps {
                 echo 'Testing...'
-                snykSecurity(
-                snykInstallation: 'mysnyk',
-                snykTokenId: 'mysnyktoken',
+                // snykSecurity(
+                // snykInstallation: 'mysnyk',
+                // snykTokenId: 'mysnyktoken',
                 // place other parameters here
-                )
+                // )
                 snykSecurity organisation: 'utkarsh.sharma-t1s', projectName: 'node-js-getting-started', severity: 'medium', snykInstallation: 'mysnyk', snykTokenId: 'mysnyktoken', targetFile: 'package.json'
                 //sh "snyk test  --json --severity-threshold=low --all-projects"
                 //sh "snyk code test"
