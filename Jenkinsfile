@@ -12,7 +12,7 @@ pipeline {
             checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlogin', url: 'https://github.com/utkarsh24695/node-js-getting-started.git']]])
             }
         }
-
+        stage('Run Tests') {
         parallel {
             stage('SonarCloud') {
                 environment {
@@ -42,6 +42,7 @@ pipeline {
                     //sh "snyk code test"
                 }
             }
+        }
         }
 
         stage("Quality Gate") {
