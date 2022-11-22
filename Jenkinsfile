@@ -12,45 +12,57 @@ pipeline {
             checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlogin', url: 'https://github.com/utkarsh24695/node-js-getting-started.git']]])
             }
         }
-        stage('Run Tests') {
-        parallel {
-            stage('SonarCloud') {
-                environment {
-                    SCANNER_HOME = tool 'mySonarScanner'
-                    ORGANIZATION = "utkarsh24695"
-                    PROJECT_NAME = "node-js-getting-started"
+
+        stage ('parallel test') {
+            parallel {
+                stage('1') {
+                    steps {
+                        echo "this is 1st"
+                    }
                 }
-                steps {
-                    withSonarQubeEnv('mySonar') {
+
+                stage('2') {
+                    steps {
+                        echo "this is 2nd"
+                    }
+                }
+            }
+        }
+
+        stage('SonarCloud') {
+            environment {
+                SCANNER_HOME = tool 'mySonarScanner'
+                ORGANIZATION = "utkarsh24695"
+                PROJECT_NAME = "node-js-getting-started"
+                }
+            steps {
+                withSonarQubeEnv('mySonar') {
                     sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION \
                     -Dsonar.projectKey=$PROJECT_NAME \
                     -Dsonar.sources=.'''
                     }
                 }
-            }
-
-            stage('Snyk Test') {
-                steps {
-                    echo 'Testing...'
-                    // snykSecurity(
-                    // snykInstallation: 'mysnyk',
-                    // snykTokenId: 'mysnyktoken',
-                    // place other parameters here
-                    // )
-                    snykSecurity organisation: 'utkarsh.sharma-t1s', projectName: 'node-js-getting-started', severity: 'medium', snykInstallation: 'mysnyk', snykTokenId: 'mysnyktoken', targetFile: 'package.json'
-                    //sh "snyk test  --json --severity-threshold=low --all-projects"
-                    //sh "snyk code test"
-                }
-            }
         }
-        }
-
         stage("Quality Gate") {
             steps {
                 timeout(time: 1, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
                 }
             }   
+        }
+
+        stage('Snyk Test') {
+            steps {
+                echo 'Testing...'
+                // snykSecurity(
+                // snykInstallation: 'mysnyk',
+                // snykTokenId: 'mysnyktoken',
+                // place other parameters here
+                // )
+                snykSecurity organisation: 'utkarsh.sharma-t1s', projectName: 'node-js-getting-started', severity: 'medium', snykInstallation: 'mysnyk', snykTokenId: 'mysnyktoken', targetFile: 'package.json'
+                //sh "snyk test  --json --severity-threshold=low --all-projects"
+                //sh "snyk code test"
+            }
         }
 
         stage('Build') { 
