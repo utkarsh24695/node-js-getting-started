@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('checkout'){
             steps {
-            checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '	gitlogintoken', url: 'https://github.com/utkarsh24695/node-js-getting-started.git']]])
+            checkout([$class: 'GitSCM', branches: [[name: '*/utkarsh']], extensions: [], userRemoteConfigs: [[credentialsId: '	gitlabLogin', url: 'https://gitlab.com/ot-facctum/ot-facctum.git']]])
             }
         }
 
