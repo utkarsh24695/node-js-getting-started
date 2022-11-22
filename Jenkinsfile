@@ -56,7 +56,8 @@ pipeline {
                 snykTokenId: 'mysnyktoken',
                 // place other parameters here
                 )
-                sh "snyk-linux test  --json --severity-threshold=low --all-projects"
+                sh "snyk test  --json --severity-threshold=low --all-projects"
+                sh "snyk code test"
             }
         }
 
