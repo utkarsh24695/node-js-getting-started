@@ -15,21 +15,7 @@ pipeline {
 
         stage ('parallel test') {
             parallel {
-                stage('1') {
-                    steps {
-                        echo "this is 1st"
-                    }
-                }
-
-                stage('2') {
-                    steps {
-                        echo "this is 2nd"
-                    }
-                }
-            }
-        }
-
-        stage('SonarCloud') {
+                stage('SonarCloud') {
             environment {
                 SCANNER_HOME = tool 'mySonarScanner'
                 ORGANIZATION = "utkarsh24695"
@@ -43,15 +29,8 @@ pipeline {
                     }
                 }
         }
-        stage("Quality Gate") {
-            steps {
-                timeout(time: 1, unit: 'MINUTES') {
-                waitForQualityGate abortPipeline: true
-                }
-            }   
-        }
 
-        stage('Snyk Test') {
+                stage('Snyk Test') {
             steps {
                 echo 'Testing...'
                 // snykSecurity(
@@ -63,6 +42,16 @@ pipeline {
                 //sh "snyk test  --json --severity-threshold=low --all-projects"
                 //sh "snyk code test"
             }
+        }
+            }
+        }
+
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+                }
+            }   
         }
 
         stage('Build') { 
